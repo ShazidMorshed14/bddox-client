@@ -8,11 +8,13 @@ const ProtectedPage = ({ children }) => {
 
   const isAuth = useSelector((state) => state.auth.isAuth);
 
-  if (!isAuth) {
-    return <Navigate to={SIGNIN} state={{ from: location.pathname }} />;
-  } else {
-    return children;
-  }
+  // if (!isAuth) {
+  //   return <Navigate to={SIGNIN} state={{ from: location.pathname }} />;
+  // } else {
+  //   return children;
+  // }
+
+  return children;
 };
 
 export default ProtectedPage;

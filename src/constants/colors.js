@@ -26,6 +26,8 @@ const COLORS = {
   primaryBtn: '#696cff',
   secondaryBtn: '#8592a3',
   fontSecondary: '#697a8d',
+  bgColor: '#697a8d',
+  themeColor: '#696cff',
 };
 
 export default COLORS;

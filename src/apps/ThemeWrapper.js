@@ -29,7 +29,7 @@ const ThemeWrapper = ({ children }) => {
         },
         loader: 'bars',
       }}>
-      <Notifications />
+      <Notifications position="top-right" />
       <ModalsProvider>{children}</ModalsProvider>
     </MantineProvider>
   );
