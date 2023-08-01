@@ -28,9 +28,9 @@ const WelcomeCard = ({ name }) => {
             lg={5}
             sm={12}
             xs={12}
-            className=" text-center text-sm-left">
+            className="text-center text-sm-left">
             <div className="card-body pb-0 px-0 px-md-4">
-              <Flex justify="flex-end">
+              <Flex justify="flex-end" align="flex-end">
                 <img
                   src={ManWithLaptopImage}
                   height="140"

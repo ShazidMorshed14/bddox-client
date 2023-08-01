@@ -3,9 +3,12 @@ import { useSelector } from 'react-redux';
 import SignIn from './SignIn';
 import { Navigate } from 'react-router-dom';
 import DashboardSearchBox from '../../components/Global/DashboardSearchBox';
-import { Grid } from '@mantine/core';
+import { Box, Flex, Grid } from '@mantine/core';
 import WelcomeCard from '../../components/Global/WelcomeCard';
 import CornerSections from '../../components/Global/CornerSections';
+import DemoTable from '../../components/Tables/DemoTable';
+import { dummyTableData } from '../../constants/dummy-data';
+import DemoForm from '../../components/Forms/DemoForm';
 
 const Dashboard = () => {
   return (
@@ -19,6 +22,14 @@ const Dashboard = () => {
           <CornerSections />
         </Grid.Col>
       </Grid>
+
+      <div>
+        <DemoTable data={dummyTableData} />
+      </div>
+
+      <Box my="md">
+        <DemoForm />
+      </Box>
     </div>
   );
 };
