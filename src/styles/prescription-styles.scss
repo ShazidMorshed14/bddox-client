@@ -1,0 +1,37 @@
+.prescription_wrapper {
+  border: 1px solid grey;
+  max-width: 45vw;
+  //padding: 1em;
+
+  .top_section_wrapper {
+    border-bottom: 1px solid grey;
+    padding: 1em;
+  }
+
+  .patient_details_section {
+    padding: 1em;
+    border-bottom: 1px solid grey;
+  }
+
+  .main_body_section {
+    //padding: 1em;
+    border-bottom: 1px solid grey;
+    min-height: 70vh;
+    position: relative;
+
+    .main_body_left_section,
+    .main_body_right-section {
+      min-height: 65vh !important;
+    }
+
+    .main_body_left_section {
+      border-right: 1px solid grey;
+    }
+
+    .main_body_left_section_inner,
+    .main_body_right_section_inner {
+      padding: 1em;
+      height: 100% !important;
+    }
+  }
+}
