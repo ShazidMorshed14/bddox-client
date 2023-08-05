@@ -147,3 +147,13 @@ export const DashboardCardIconChoice = (title, color) => {
       return <IconPackages color={color ? color : '#ffffff'} size="1.5em" />;
   }
 };
+
+export function formatDateForDob(inputDateString) {
+  const dateObject = new Date(inputDateString);
+
+  const day = String(dateObject.getDate()).padStart(2, '0');
+  const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+  const year = dateObject.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}

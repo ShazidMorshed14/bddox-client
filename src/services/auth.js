@@ -6,7 +6,7 @@ export const SignInApi = async (email, password) => {
   try {
     const { data } = await axios().post('/auth/login', {
       authContext: authContext,
-      identifier: email,
+      email: email,
       password: password,
     });
 

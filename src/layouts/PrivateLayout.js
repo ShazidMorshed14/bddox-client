@@ -90,9 +90,9 @@ const PrivateLayout = () => {
     });
   };
 
-  // if (!user) {
-  //   window.location.href = '/';
-  // }
+  if (!user) {
+    window.location.href = '/';
+  }
 
   return (
     <AppShell
