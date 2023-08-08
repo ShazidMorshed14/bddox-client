@@ -1,5 +1,5 @@
 import React from 'react';
-import { getProgressBar } from '../../constants/const';
+import { calculateAge, getProgressBar } from '../../constants/const';
 import { Box, Button, Center, Menu } from '@mantine/core';
 import TableComponent from '../Global/TableComponent';
 import {
@@ -13,7 +13,7 @@ import {
 } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 
-const PatientTable = ({ data }) => {
+const PatientTable = ({ data, handleSelectItem, handleDeleteItem }) => {
   const ths = (
     <tr>
       <th>PID</th>
@@ -37,7 +37,7 @@ const PatientTable = ({ data }) => {
 
         <td>{product.gender}</td>
 
-        <td>{product.dob}</td>
+        <td>{product.dob ? calculateAge(product.dob) : 'N/A'}</td>
 
         <td>{product.address}</td>
 
@@ -50,8 +50,16 @@ const PatientTable = ({ data }) => {
               </Menu.Target>
 
               <Menu.Dropdown>
-                <Menu.Item icon={<IconPencil size={18} />}>Edit</Menu.Item>
-                <Menu.Item icon={<IconTrash size={16} />}>Delete</Menu.Item>
+                <Menu.Item
+                  icon={<IconPencil size={18} />}
+                  onClick={() => handleSelectItem(product)}>
+                  Edit
+                </Menu.Item>
+                <Menu.Item
+                  icon={<IconTrash size={16} />}
+                  onClick={() => handleDeleteItem(product._id)}>
+                  Delete
+                </Menu.Item>
                 <Menu.Item icon={<IconEyeCheck size={16} />}>Details</Menu.Item>
                 <Menu.Item icon={<IconCalendar size={16} />}>
                   Set Appoinment

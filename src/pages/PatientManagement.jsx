@@ -13,13 +13,17 @@ import React, { useState } from 'react';
 import COLORS from '../constants/colors';
 import { IconCalendar, IconPlus, IconRefresh } from '@tabler/icons-react';
 import SearchInput from '../components/Global/SearchInput';
-import { useQuery } from '@tanstack/react-query';
-import { fetchDoctorsPatients } from '../services/patient';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { deletePatient, fetchDoctorsPatients } from '../services/patient';
 import ServerErrorBox from '../components/Global/ServerErrorBox';
 import ShowItems from '../components/Global/ShowItems';
 import PatientTable from '../components/Tables/PatientTable';
 import { useDisclosure } from '@mantine/hooks';
 import RegisterPatientDrawer from '../components/Drawers/RegisterPatientDrawer';
+import UpdatePatientDetailsDrawer from '../components/Drawers/UpdatePatientDetailsDrawer';
+import { openConfirmModal } from '@mantine/modals';
+import { handleErrorResponse } from '../utils/utils';
+import { NotificationUtil } from '../utils/notifications';
 
 const PatientManagement = () => {
   const [page, setPage] = useState(1);
@@ -31,9 +35,19 @@ const PatientManagement = () => {
   const [invokingRefreshForSearchInput, setInvokingRefreshForSearchInput] =
     useState(null);
 
-  //add package drawer
+  //add patient drawer
   const [addDrawerOpened, { open: addDrawerOpen, close: addDrawerClose }] =
     useDisclosure(false);
+  //edit patient details drawer
+  const [editDrawerOpened, { open: editDrawerOpen, close: editDrawerClose }] =
+    useDisclosure(false);
+
+  const [selectedPatient, setSelectedPatient] = useState(null);
+
+  const handleSelectItem = (patient) => {
+    setSelectedPatient(patient);
+    editDrawerOpen();
+  };
 
   const handlePageSize = (value) => {
     setPage(1);
@@ -64,7 +78,12 @@ const PatientManagement = () => {
     setPhone(null);
   };
 
-  //fetching products only
+  const handleEditDrawerClose = () => {
+    setSelectedPatient(null);
+    editDrawerClose();
+  };
+
+  //fetching patient only
   const { data, isLoading, error, isFetching, refetch } = useQuery({
     queryKey: ['fetch-patients', page, pageSize, pid, name, phone, null],
     queryFn: fetchDoctorsPatients,
@@ -72,6 +91,46 @@ const PatientManagement = () => {
     keepPreviousData: true,
     retry: false,
   });
+
+  //delete patient
+  const {
+    mutate: deleteItemMutate,
+    isMutating: deleteItemMutating,
+    isLoading: deleteItemMutateLoading,
+  } = useMutation({
+    mutationFn: (value) => deletePatient(value),
+    onError: (error) => {
+      handleErrorResponse(error);
+    },
+    onSuccess: (response) => {
+      if (response) {
+        refetch();
+        NotificationUtil({
+          success: false,
+          title: 'Success',
+          message: 'Patient Deleted successfully',
+        });
+      }
+    },
+  });
+
+  const handleDeleteItem = (id) => {
+    openConfirmModal({
+      title: 'Confirm',
+      styles: () => ({
+        title: {
+          fontSize: '22px',
+          fontWeight: 'bold',
+        },
+      }),
+      children: <Text size="sm">Are you sure you want to delete Mapping?</Text>,
+      confirmProps: { color: 'red' },
+      labels: { confirm: 'Confirm', cancel: 'Cancel' },
+      onConfirm: () => {
+        deleteItemMutate(id);
+      },
+    });
+  };
 
   if (isLoading)
     return (
@@ -107,12 +166,21 @@ const PatientManagement = () => {
     );
 
   const { patients, total } = data.data.data;
-  console.log('patients', patients);
+  //console.log('patients', patients);
 
   return (
     <>
       {/* add patient drawer */}
       <RegisterPatientDrawer opened={addDrawerOpened} close={addDrawerClose} />
+
+      {/* edit patient details*/}
+      {selectedPatient && (
+        <UpdatePatientDetailsDrawer
+          opened={editDrawerOpened}
+          close={handleEditDrawerClose}
+          data={selectedPatient}
+        />
+      )}
 
       <div className="card">
         <div className="card-body">
@@ -187,7 +255,8 @@ const PatientManagement = () => {
               <>
                 <PatientTable
                   data={patients}
-                  //handleSelectItem={handleSelectItem}
+                  handleSelectItem={handleSelectItem}
+                  handleDeleteItem={handleDeleteItem}
                   //handleAssignPlatoformDrawer={handleAssignPlatoformDrawer}
                 />
                 <Flex justify="space-between" align="center">
