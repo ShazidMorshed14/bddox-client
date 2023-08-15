@@ -7,3 +7,4 @@ export const PRESCRIPTION_CREATE = '/prescription/create';
 export const PATIENT = '/patient';
 export const MEDICINE = '/medicine';
 export const PROFILE = '/profile';
+export const APPOINTMENT = '/appointment';

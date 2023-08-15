@@ -40,7 +40,7 @@ const useStyles = createStyles((theme) => ({
   //   marginRight: -theme.spacing.md,
   // },
   link: {
-    width: rem(150),
+    width: rem(180),
     height: rem(50),
     borderRadius: '0.5rem !important',
     display: 'flex',

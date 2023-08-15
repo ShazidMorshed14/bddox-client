@@ -108,7 +108,7 @@ const PrivateLayout = () => {
       navbar={
         <Navbar
           // height={750}
-          width={{ base: 200 }}
+          width={{ base: 220 }}
           p="md"
           sx={() => ({
             backgroundColor: '#ffffff',

@@ -8,6 +8,7 @@ import ProfileManagement from '../pages/ProfileManagement';
 import PatientManagement from '../pages/PatientManagement';
 import MedicineManagement from '../pages/MedicineManagement';
 import PrescriptionCreate from '../pages/PrescriptionCreate';
+import AppointmentManagement from '../pages/AppointmentManagement';
 
 const routes = [
   {
@@ -61,6 +62,12 @@ const routes = [
   {
     path: urls.MEDICINE,
     Element: MedicineManagement,
+    isIndexUrl: false,
+    isProtected: true,
+  },
+  {
+    path: urls.APPOINTMENT,
+    Element: AppointmentManagement,
     isIndexUrl: false,
     isProtected: true,
   },

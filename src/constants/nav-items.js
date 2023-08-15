@@ -1,4 +1,5 @@
 import {
+  IconCalendarTime,
   IconLayoutDashboard,
   IconPrescription,
   IconUser,
@@ -27,6 +28,11 @@ const navBarList = [
     label: 'Patients',
     icon: IconUsers,
     link: urls.PATIENT,
+  },
+  {
+    label: 'Appointments',
+    icon: IconCalendarTime,
+    link: urls.APPOINTMENT,
   },
 ];
 
