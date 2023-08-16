@@ -14,6 +14,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import COLORS from '../constants/colors';
 import { orderStatusConst, userRoles, userWeight } from '../constants/const';
 import { NotificationUtil } from './notifications';
+import { Badge } from '@mantine/core';
 
 export const isArrayAndHasContent = (arr) => {
   return Array.isArray(arr) && arr.length > 0;
@@ -418,5 +419,49 @@ export const isReopenable = (openedAt) => {
     return false;
   } else {
     return true;
+  }
+};
+
+export const getBadge = (value) => {
+  switch (value) {
+    case 'pending':
+      return (
+        <Badge variant="filled" color="yellow">
+          {value}
+        </Badge>
+      );
+    case 'postponded':
+      return (
+        <Badge variant="filled" color="orange">
+          {value}
+        </Badge>
+      );
+    case 'cancelled':
+      return (
+        <Badge variant="filled" color="red">
+          {value}
+        </Badge>
+      );
+    case 'completed':
+      return (
+        <Badge variant="filled" color="green">
+          {value}
+        </Badge>
+      );
+    case 'unpaid':
+      return (
+        <Badge variant="filled" color="red">
+          {value}
+        </Badge>
+      );
+    case 'paid':
+      return (
+        <Badge variant="filled" color="green">
+          {value}
+        </Badge>
+      );
+
+    default:
+      return <Badge variant="filled">{value}</Badge>;
   }
 };

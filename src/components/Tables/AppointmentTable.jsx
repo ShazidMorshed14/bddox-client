@@ -1,6 +1,6 @@
 import React from 'react';
 import { calculateAge, getProgressBar } from '../../constants/const';
-import { Box, Button, Center, Menu } from '@mantine/core';
+import { Badge, Box, Button, Center, Menu, Text } from '@mantine/core';
 import TableComponent from '../Global/TableComponent';
 import {
   IconCalendar,
@@ -12,22 +12,21 @@ import {
   IconTrash,
 } from '@tabler/icons-react';
 import dayjs from 'dayjs';
+import { getBadge } from '../../utils/utils';
 
-const PatientTable = ({
-  data,
-  handleSelectItem,
-  handleDeleteItem,
-  handleSelectItemAndScheduleAppointment,
-}) => {
+const AppointmentTable = ({ data, handleSelectItem, handleDeleteItem }) => {
   const ths = (
     <tr>
+      <th>AID</th>
       <th>PID</th>
       <th>Name</th>
       <th>Phone</th>
-      <th>Gender</th>
-      <th>Age</th>
-      <th>Address</th>
-      <th>Reg. Date</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Status</th>
+      <th>Payment</th>
+      <th>Payment Status</th>
+      <th>Next Visit</th>
       <th>Actions</th>
     </tr>
   );
@@ -35,18 +34,24 @@ const PatientTable = ({
   const rows = data.map((product, index) => {
     return (
       <tr key={index} style={{ padding: '1em' }}>
-        <td>{product.pid}</td>
-        <td>{product.name}</td>
-
-        <td>{product.phone}</td>
-
-        <td>{product.gender}</td>
-
-        <td>{product.dob ? calculateAge(product.dob) : 'N/A'}</td>
-
-        <td>{product.address}</td>
-
-        <td>{dayjs(product.createdAt).format('MMM DD, YYYY')}</td>
+        <td>{product.aid}</td>
+        <td>{product?.patientId?.pid}</td>
+        <td>{product?.patientId?.name}</td>
+        <td>{product?.patientId?.phone}</td>
+        <td>{product.date}</td>
+        <td>{product.time}</td>
+        <td>{getBadge(product.status)}</td>
+        <td>
+          <Center>
+            <Text fw={600} color="green">
+              {product.payment}
+            </Text>
+          </Center>
+        </td>
+        <td>{getBadge(product.payment_status)}</td>
+        <td>
+          {product.next_visiting_date ? product.next_visiting_date : 'N/A'}
+        </td>
         <td>
           <Center>
             <Menu shadow="md" width={200}>
@@ -66,13 +71,6 @@ const PatientTable = ({
                   Delete
                 </Menu.Item>
                 <Menu.Item icon={<IconEyeCheck size={16} />}>Details</Menu.Item>
-                <Menu.Item
-                  icon={<IconCalendar size={16} />}
-                  onClick={() =>
-                    handleSelectItemAndScheduleAppointment(product)
-                  }>
-                  Set Appoinment
-                </Menu.Item>
               </Menu.Dropdown>
             </Menu>
           </Center>
@@ -88,4 +86,4 @@ const PatientTable = ({
   );
 };
 
-export default PatientTable;
+export default AppointmentTable;

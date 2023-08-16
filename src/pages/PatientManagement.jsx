@@ -24,6 +24,7 @@ import UpdatePatientDetailsDrawer from '../components/Drawers/UpdatePatientDetai
 import { openConfirmModal } from '@mantine/modals';
 import { handleErrorResponse } from '../utils/utils';
 import { NotificationUtil } from '../utils/notifications';
+import AppointmentModal from '../components/Modals/AppointmentModal';
 
 const PatientManagement = () => {
   const [page, setPage] = useState(1);
@@ -42,11 +43,24 @@ const PatientManagement = () => {
   const [editDrawerOpened, { open: editDrawerOpen, close: editDrawerClose }] =
     useDisclosure(false);
 
+  //add appointment drawer open
+  const [opened, { open, close }] = useDisclosure(false);
+
   const [selectedPatient, setSelectedPatient] = useState(null);
 
   const handleSelectItem = (patient) => {
     setSelectedPatient(patient);
     editDrawerOpen();
+  };
+
+  const handleSelectItemAndScheduleAppointment = (patient) => {
+    setSelectedPatient(patient);
+    open();
+  };
+
+  const handleAppointmentModalClose = () => {
+    setSelectedPatient(null);
+    close();
   };
 
   const handlePageSize = (value) => {
@@ -182,6 +196,15 @@ const PatientManagement = () => {
         />
       )}
 
+      {/* Schedule Appointment*/}
+      {selectedPatient && (
+        <AppointmentModal
+          opened={opened}
+          close={handleAppointmentModalClose}
+          data={selectedPatient}
+        />
+      )}
+
       <div className="card">
         <div className="card-body">
           <Flex w="100%" justify="space-between" align="center" my="sm">
@@ -227,7 +250,7 @@ const PatientManagement = () => {
 
               <Tooltip label="Refresh">
                 <ActionIcon
-                  size="lg"
+                  size="md"
                   onClick={handleRefresh}
                   sx={{
                     backgroundColor: COLORS.orange,
@@ -257,7 +280,9 @@ const PatientManagement = () => {
                   data={patients}
                   handleSelectItem={handleSelectItem}
                   handleDeleteItem={handleDeleteItem}
-                  //handleAssignPlatoformDrawer={handleAssignPlatoformDrawer}
+                  handleSelectItemAndScheduleAppointment={
+                    handleSelectItemAndScheduleAppointment
+                  }
                 />
                 <Flex justify="space-between" align="center">
                   <ShowItems
