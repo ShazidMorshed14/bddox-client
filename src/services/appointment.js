@@ -13,3 +13,13 @@ export const fetchDoctorsAppointments = async (context) => {
   });
   return response;
 };
+
+export const createAppointment = async (values) => {
+  const response = await axios().post('/appointment/create', values);
+  return response;
+};
+
+export const updateAppointmentDetails = async (values, id) => {
+  const response = await axios().put(`/appointment/update/${id}`, values);
+  return response;
+};

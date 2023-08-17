@@ -7,6 +7,7 @@ import {
   TextInput,
   Grid,
   Select,
+  Drawer,
 } from '@mantine/core';
 import React from 'react';
 import COLORS from '../../constants/colors';
@@ -28,30 +29,37 @@ import {
   DateInputDateConvert,
   formatTime,
   handleErrorResponse,
+  parseTime,
 } from '../../utils/utils';
 import { NotificationUtil } from '../../utils/notifications';
-import { formatDateForDob } from '../../constants/const';
-import { createAppointment } from '../../services/appointment';
+import { formatDateForDob, parseFormattedDate } from '../../constants/const';
+import {
+  createAppointment,
+  updateAppointmentDetails,
+} from '../../services/appointment';
+import { openConfirmModal } from '@mantine/modals';
 
-const AppointmentModal = ({ opened, close, data }) => {
+const UpdateAppointmentDrawer = ({ opened, close, data }) => {
   const queryClient = useQueryClient();
   const ref = useRef();
   //console.log(data);
 
   const form = useForm({
     initialValues: {
-      patientId: data._id,
-      date: '',
-      time: '',
-      next_visiting_date: '',
-      payment: 0,
-      payment_status: 'unpaid',
-      status: 'pending',
+      //patientId: data.patientId._id,
+      date: data.date ? parseFormattedDate(data.date) : '',
+      time: data.time ? parseTime(data.time) : '',
+      next_visiting_date: data.next_visiting_date
+        ? parseFormattedDate(data.next_visiting_date)
+        : '',
+      payment: data.payment ? data.payment : 0,
+      payment_status: data.payment_status ? data.payment_status : 'unpaid',
+      status: data.status ? data.status : 'pending',
     },
 
     validate: {
-      patientId: (value) =>
-        value.length < 1 ? 'patientId must be given' : null,
+      // patientId: (value) =>
+      //   value.length < 1 ? 'patientId must be given' : null,
       date: (value) => (value.length < 1 ? 'date must be given' : null),
       time: (value) => (value.length < 1 ? 'time must be given' : null),
       payment: (value) =>
@@ -71,26 +79,25 @@ const AppointmentModal = ({ opened, close, data }) => {
     });
   };
 
-  const {
-    mutate: addAppointmentMutate,
-    isMutating,
-    isLoading,
-  } = useMutation({
-    mutationFn: (value) => createAppointment(value),
-    onError: (error) => {
-      handleErrorResponse(error);
+  const { mutate: updateMutate, isLoading } = useMutation({
+    mutationFn: async (values) =>
+      await updateAppointmentDetails(values, data._id),
+    onSuccess: () => {
+      NotificationUtil({
+        success: true,
+        title: 'Success',
+        message: 'Updated successfully',
+      });
+      refetchAppointments();
+      form.reset();
+      close();
     },
-    onSuccess: (response) => {
-      if (response) {
-        refetchAppointments();
-        NotificationUtil({
-          success: true,
-          title: 'Success',
-          message: 'Appointment Scheduled successfully!',
-        });
-        form.reset();
-        close();
-      }
+    onError: (error) => {
+      NotificationUtil({
+        success: false,
+        title: 'Error',
+        message: error.response.data.message,
+      });
     },
   });
 
@@ -103,32 +110,43 @@ const AppointmentModal = ({ opened, close, data }) => {
         : null,
       time: formatTime(values.time),
     };
-    addAppointmentMutate(reqBody);
-  };
-  return (
-    <Modal
-      opened={opened}
-      onClose={close}
-      title="Schedule Appointnment"
-      size="xl"
-      closeOnClickOutside={false}>
-      <div>
-        <Flex gap={5} py="sm" justify="flex-start" align="center">
-          <Text fz="md" fw={600}>
-            Scheduling appointment for
-          </Text>
-          <Text fz="md" fw={700} color={COLORS.primaryBtn}>
-            {data.name}-{data.pid}
-          </Text>
-        </Flex>
 
+    openConfirmModal({
+      title: 'Confirm',
+      styles: () => ({
+        title: {
+          fontSize: '22px',
+          fontWeight: 'bold',
+        },
+      }),
+      children: <Text size="sm">Are you sure you want to Save Changes?</Text>,
+      confirmProps: { color: 'red' },
+      labels: { confirm: 'Confirm', cancel: 'Cancel' },
+      onConfirm: () => {
+        updateMutate(reqBody);
+      },
+    });
+  };
+
+  return (
+    <Drawer
+      opened={opened}
+      onClose={() => {
+        form.reset();
+        close();
+      }}
+      title="Edit Appointment Details"
+      overlayProps={{ opacity: 0.5, blur: 4 }}
+      position="right"
+      size="md">
+      <div>
         <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
           <Flex
             direction="column"
             justify="space-between"
-            style={{ minHeight: '65vh' }}>
+            style={{ minHeight: '80vh' }}>
             <Flex direction="column" justify="flex-start" gap={10}>
-              <div>
+              {/* <div>
                 <TextInput
                   //placeholder="Ex. Shazid Morshed"
                   label="Patient Id"
@@ -136,9 +154,9 @@ const AppointmentModal = ({ opened, close, data }) => {
                   disabled
                   {...form.getInputProps('patientId')}
                 />
-              </div>
+              </div> */}
               <Grid>
-                <Grid.Col lg={6} md={6} sm={12} xs={12}>
+                <Grid.Col lg={12} md={12} sm={12} xs={12}>
                   <div>
                     <DateInput
                       size="xs"
@@ -149,7 +167,7 @@ const AppointmentModal = ({ opened, close, data }) => {
                     />
                   </div>
                 </Grid.Col>
-                <Grid.Col lg={6} md={6} sm={12} xs={12}>
+                <Grid.Col lg={12} md={12} sm={12} xs={12}>
                   <div>
                     <TimeInput
                       size="xs"
@@ -168,7 +186,7 @@ const AppointmentModal = ({ opened, close, data }) => {
               </Grid>
 
               <Grid>
-                <Grid.Col lg={4} md={4} sm={12} xs={12}>
+                <Grid.Col lg={12} md={12} sm={12} xs={12}>
                   <div>
                     <DateInput
                       size="xs"
@@ -178,7 +196,7 @@ const AppointmentModal = ({ opened, close, data }) => {
                     />
                   </div>
                 </Grid.Col>
-                <Grid.Col lg={4} md={4} sm={12} xs={12}>
+                <Grid.Col lg={12} md={12} sm={12} xs={12}>
                   <div>
                     <TextInput
                       placeholder="Ex. 500"
@@ -192,7 +210,7 @@ const AppointmentModal = ({ opened, close, data }) => {
                     />
                   </div>
                 </Grid.Col>
-                <Grid.Col lg={4} md={4} sm={12} xs={12}>
+                <Grid.Col lg={12} md={12} sm={12} xs={12}>
                   <div>
                     <Select
                       size="xs"
@@ -208,8 +226,8 @@ const AppointmentModal = ({ opened, close, data }) => {
                 </Grid.Col>
               </Grid>
 
-              <Flex>
-                <div>
+              <Grid>
+                <Grid.Col>
                   <Select
                     size="xs"
                     label="status"
@@ -222,8 +240,8 @@ const AppointmentModal = ({ opened, close, data }) => {
                     ]}
                     {...form.getInputProps('status')}
                   />
-                </div>
-              </Flex>
+                </Grid.Col>
+              </Grid>
             </Flex>
 
             <Flex my="sm" justify="flex-end" gap={10}>
@@ -232,7 +250,7 @@ const AppointmentModal = ({ opened, close, data }) => {
               </Button>
               {isLoading ? (
                 <Button leftIcon={<IconDatabase size="1rem" />} loading>
-                  Please wait..
+                  Updating..
                 </Button>
               ) : (
                 <Button size="xs" className="primary_btn" type="submit">
@@ -243,8 +261,8 @@ const AppointmentModal = ({ opened, close, data }) => {
           </Flex>
         </form>
       </div>
-    </Modal>
+    </Drawer>
   );
 };
 
-export default AppointmentModal;
+export default UpdateAppointmentDrawer;

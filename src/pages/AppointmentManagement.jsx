@@ -26,15 +26,31 @@ import { handleErrorResponse } from '../utils/utils';
 import { NotificationUtil } from '../utils/notifications';
 import { fetchDoctorsAppointments } from '../services/appointment';
 import AppointmentTable from '../components/Tables/AppointmentTable';
+import UpdateAppointmentDrawer from '../components/Drawers/UpdateAppointmentDrawer';
 const AppointmentManagement = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [pid, setPid] = useState(null);
   const [name, setName] = useState(null);
   const [phone, setPhone] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const [invokingRefreshForSearchInput, setInvokingRefreshForSearchInput] =
     useState(null);
+
+  //drawers
+  const [editDrawerOpened, { open: editDrawerOpen, close: editDrawerClose }] =
+    useDisclosure(false);
+
+  const handleSelectItem = (data) => {
+    setSelectedItem(data);
+    editDrawerOpen();
+  };
+
+  const handleEditDrawerClose = () => {
+    setSelectedItem(null);
+    editDrawerClose();
+  };
 
   const handlePageSize = (value) => {
     setPage(1);
@@ -92,6 +108,14 @@ const AppointmentManagement = () => {
               </Button>
             </Flex>
           </Flex>
+          <Stack
+            sx={{
+              minHeight: '80vh',
+            }}
+            justify="center"
+            align="center">
+            <Loader size="md" variant="dots" />
+          </Stack>
         </div>
       </div>
     );
@@ -108,6 +132,15 @@ const AppointmentManagement = () => {
 
   return (
     <div>
+      {/* edit patient details*/}
+      {selectedItem && (
+        <UpdateAppointmentDrawer
+          opened={editDrawerOpened}
+          close={handleEditDrawerClose}
+          data={selectedItem}
+        />
+      )}
+
       <div className="card">
         <div className="card-body">
           <Flex w="100%" justify="space-between" align="center" my="sm">
@@ -181,7 +214,7 @@ const AppointmentManagement = () => {
               <>
                 <AppointmentTable
                   data={appointments}
-                  //handleSelectItem={handleSelectItem}
+                  handleSelectItem={handleSelectItem}
                   //handleDeleteItem={handleDeleteItem}
                   //handleAssignPlatoformDrawer={handleAssignPlatoformDrawer}
                 />
