@@ -5,6 +5,7 @@ import {
   Flex,
   Loader,
   Pagination,
+  Select,
   Stack,
   Text,
   Tooltip,
@@ -33,6 +34,8 @@ const AppointmentManagement = () => {
   const [pid, setPid] = useState(null);
   const [name, setName] = useState(null);
   const [phone, setPhone] = useState(null);
+  const [aid, setAid] = useState(null);
+  const [type, setType] = useState('all');
   const [selectedItem, setSelectedItem] = useState(null);
 
   const [invokingRefreshForSearchInput, setInvokingRefreshForSearchInput] =
@@ -61,6 +64,10 @@ const AppointmentManagement = () => {
     setPage(1);
     setPid(value);
   };
+  const handleAidSearch = (value) => {
+    setPage(1);
+    setAid(value);
+  };
 
   const handleNameSearch = (value) => {
     setPage(1);
@@ -79,11 +86,23 @@ const AppointmentManagement = () => {
     setPid(null);
     setName(null);
     setPhone(null);
+    setAid(null);
+    setType('all');
   };
 
   //fetching appointments
   const { data, isLoading, error, isFetching, refetch } = useQuery({
-    queryKey: ['fetch-appointments', page, pageSize, pid, name, phone, null],
+    queryKey: [
+      'fetch-appointments',
+      page,
+      pageSize,
+      pid,
+      name,
+      phone,
+      null,
+      aid,
+      type,
+    ],
     queryFn: fetchDoctorsAppointments,
     refetchOnWindowFocus: false,
     keepPreviousData: true,
@@ -161,7 +180,14 @@ const AppointmentManagement = () => {
           <Flex justify="space-between" align="center" py="sm" gap={20}>
             <Flex gap={20}>
               <SearchInput
-                //handleRefresh={() => handleRefresh()}
+                handleRefresh={() => handleRefresh()}
+                handleSearch={handleAidSearch}
+                placeholder="Search AID"
+                invokeRefresh={invokingRefreshForSearchInput}
+                refreshBtn={false}
+              />
+              <SearchInput
+                handleRefresh={() => handleRefresh()}
                 //handleSearch={handleNameSearch}
                 placeholder="Search Name"
                 //invokeRefresh={invokingRefreshForSearchInput}
@@ -169,10 +195,10 @@ const AppointmentManagement = () => {
               />
 
               <SearchInput
-                //handleRefresh={() => handleRefresh()}
-                //handleSearch={handlePidSearch}
+                handleRefresh={() => handleRefresh()}
+                handleSearch={handlePidSearch}
                 placeholder="Search PID"
-                //invokeRefresh={invokingRefreshForSearchInput}
+                invokeRefresh={invokingRefreshForSearchInput}
                 refreshBtn={false}
               />
 
@@ -184,10 +210,24 @@ const AppointmentManagement = () => {
                 refreshBtn={false}
               />
 
+              <Select
+                placeholder="Select Date"
+                value={type}
+                size="xs"
+                invokeRefresh={invokingRefreshForSearchInput}
+                data={[
+                  { value: 'all', label: 'All' },
+                  { value: 'today', label: 'Today' },
+                  { value: 'this_week', label: 'This Week' },
+                  { value: 'this_month', label: 'This Month' },
+                ]}
+                onChange={(e) => setType(e)}
+              />
+
               <Tooltip label="Refresh">
                 <ActionIcon
                   size="md"
-                  //onClick={handleRefresh}
+                  onClick={handleRefresh}
                   sx={{
                     backgroundColor: COLORS.orange,
                   }}

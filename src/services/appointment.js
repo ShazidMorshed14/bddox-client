@@ -9,6 +9,8 @@ export const fetchDoctorsAppointments = async (context) => {
       name: context.queryKey[4],
       phone: context.queryKey[5],
       pageLess: context.queryKey[6],
+      aid: context.queryKey[7],
+      type: context.queryKey[8],
     },
   });
   return response;
