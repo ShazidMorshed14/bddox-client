@@ -16,6 +16,13 @@ export const fetchDoctorsAppointments = async (context) => {
   return response;
 };
 
+export const fetchAppointmentDetails = async (context) => {
+  const response = await axios().get(
+    `/appointment/details/${context.queryKey[1]}`,
+  );
+  return response;
+};
+
 export const createAppointment = async (values) => {
   const response = await axios().post('/appointment/create', values);
   return response;

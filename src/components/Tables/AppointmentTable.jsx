@@ -9,12 +9,16 @@ import {
   IconDotsVertical,
   IconEyeCheck,
   IconPencil,
+  IconPrescription,
   IconTrash,
 } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { getBadge } from '../../utils/utils';
+import { useNavigate } from 'react-router-dom';
 
 const AppointmentTable = ({ data, handleSelectItem, handleDeleteItem }) => {
+  const navigate = useNavigate();
+
   const ths = (
     <tr>
       <th>AID</th>
@@ -71,6 +75,11 @@ const AppointmentTable = ({ data, handleSelectItem, handleDeleteItem }) => {
                   Delete
                 </Menu.Item>
                 <Menu.Item icon={<IconEyeCheck size={16} />}>Details</Menu.Item>
+                <Menu.Item
+                  icon={<IconPrescription size={16} />}
+                  onClick={() => navigate(`/appointment/${product._id}`)}>
+                  Create Prescription
+                </Menu.Item>
               </Menu.Dropdown>
             </Menu>
           </Center>

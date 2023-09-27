@@ -9,6 +9,7 @@ import PatientManagement from '../pages/PatientManagement';
 import MedicineManagement from '../pages/MedicineManagement';
 import PrescriptionCreate from '../pages/PrescriptionCreate';
 import AppointmentManagement from '../pages/AppointmentManagement';
+import AssignPrescription from '../pages/AssignPrescription';
 
 const routes = [
   {
@@ -68,6 +69,12 @@ const routes = [
   {
     path: urls.APPOINTMENT,
     Element: AppointmentManagement,
+    isIndexUrl: false,
+    isProtected: true,
+  },
+  {
+    path: urls.APPOINTMENT_DETAILS,
+    Element: AssignPrescription,
     isIndexUrl: false,
     isProtected: true,
   },

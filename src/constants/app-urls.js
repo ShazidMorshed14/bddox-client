@@ -8,3 +8,4 @@ export const PATIENT = '/patient';
 export const MEDICINE = '/medicine';
 export const PROFILE = '/profile';
 export const APPOINTMENT = '/appointment';
+export const APPOINTMENT_DETAILS = '/appointment/:appointmentId';
