@@ -10,7 +10,7 @@ const NavbarLink = ({ icon: Icon, label, active, onClick }) => {
       <UnstyledButton
         onClick={onClick}
         className={cx(classes.link, { [classes.active]: active })}>
-        <Flex justify="center" align="center" gap={8}>
+        <Flex justify="flex-start" align="center" gap={8}>
           <Icon size="1.2rem" stroke={1.5} />
           {label}
         </Flex>

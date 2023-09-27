@@ -14,6 +14,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import COLORS from '../constants/colors';
 import { orderStatusConst, userRoles, userWeight } from '../constants/const';
 import { NotificationUtil } from './notifications';
+import { Badge } from '@mantine/core';
 
 export const isArrayAndHasContent = (arr) => {
   return Array.isArray(arr) && arr.length > 0;
@@ -419,4 +420,100 @@ export const isReopenable = (openedAt) => {
   } else {
     return true;
   }
+};
+
+export const getBadge = (value) => {
+  switch (value) {
+    case 'pending':
+      return (
+        <Badge variant="filled" color="yellow">
+          {value}
+        </Badge>
+      );
+    case 'postponded':
+      return (
+        <Badge variant="filled" color="orange">
+          {value}
+        </Badge>
+      );
+    case 'cancelled':
+      return (
+        <Badge variant="filled" color="red">
+          {value}
+        </Badge>
+      );
+    case 'completed':
+      return (
+        <Badge variant="filled" color="green">
+          {value}
+        </Badge>
+      );
+    case 'unpaid':
+      return (
+        <Badge variant="filled" color="red">
+          {value}
+        </Badge>
+      );
+    case 'paid':
+      return (
+        <Badge variant="filled" color="green">
+          {value}
+        </Badge>
+      );
+
+    default:
+      return <Badge variant="filled">{value}</Badge>;
+  }
+};
+
+export const DateInputDateConvert = (inputDate) => {
+  const year = inputDate.getFullYear();
+  const month = String(inputDate.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const day = String(inputDate.getDate()).padStart(2, '0');
+
+  // Construct the desired output format
+  const outputDateString = `${year}-${month}-${day}`;
+  return outputDateString;
+};
+
+export const formatTime = (time) => {
+  var timeSplit = time.split(':'),
+    hours,
+    minutes,
+    meridian;
+  hours = timeSplit[0];
+  minutes = timeSplit[1];
+  if (hours > 12) {
+    meridian = 'PM';
+    hours -= 12;
+  } else if (hours < 12) {
+    meridian = 'AM';
+    if (hours == 0) {
+      hours = 12;
+    }
+  } else {
+    meridian = 'PM';
+  }
+
+  let finalTime = hours + ':' + minutes + ' ' + meridian;
+
+  return finalTime;
+};
+
+export const parseTime = (formattedTime) => {
+  const timeParts = formattedTime.split(' ');
+  const meridian = timeParts[1];
+  const time = timeParts[0];
+  const [hours, minutes] = time.split(':');
+
+  let originalHours = parseInt(hours);
+  if (meridian === 'PM' && originalHours < 12) {
+    originalHours += 12;
+  } else if (meridian === 'AM' && originalHours === 12) {
+    originalHours = 0;
+  }
+
+  const originalTime = `${String(originalHours).padStart(2, '0')}:${minutes}`;
+
+  return originalTime;
 };

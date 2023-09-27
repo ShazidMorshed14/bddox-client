@@ -147,3 +147,39 @@ export const DashboardCardIconChoice = (title, color) => {
       return <IconPackages color={color ? color : '#ffffff'} size="1.5em" />;
   }
 };
+
+export function formatDateForDob(inputDateString) {
+  const dateObject = new Date(inputDateString);
+
+  const day = String(dateObject.getDate()).padStart(2, '0');
+  const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+  const year = dateObject.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
+
+export function parseFormattedDate(formattedDateString) {
+  const parts = formattedDateString.split('-');
+  const day = parseInt(parts[0], 10);
+  const month = parseInt(parts[1], 10) - 1;
+  const year = parseInt(parts[2], 10);
+
+  return new Date(year, month, day);
+}
+
+export function calculateAge(birthdateString) {
+  const birthdate = new Date(birthdateString);
+  const today = new Date();
+
+  let age = today.getFullYear() - birthdate.getFullYear();
+  const monthDifference = today.getMonth() - birthdate.getMonth();
+
+  if (
+    monthDifference < 0 ||
+    (monthDifference === 0 && today.getDate() < birthdate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
+}

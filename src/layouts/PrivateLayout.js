@@ -90,9 +90,9 @@ const PrivateLayout = () => {
     });
   };
 
-  // if (!user) {
-  //   window.location.href = '/';
-  // }
+  if (!user) {
+    window.location.href = '/';
+  }
 
   return (
     <AppShell
@@ -108,7 +108,7 @@ const PrivateLayout = () => {
       navbar={
         <Navbar
           // height={750}
-          width={{ base: 170 }}
+          width={{ base: 220 }}
           p="md"
           sx={() => ({
             backgroundColor: '#ffffff',

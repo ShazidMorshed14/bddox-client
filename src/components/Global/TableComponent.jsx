@@ -8,7 +8,7 @@ const TableComponent = ({ ths, rows, data, tableHeight }) => {
   return (
     <>
       {isArrayAndHasContent(data) ? (
-        <ScrollArea h={tableHeight ? tableHeight : '70vh'}>
+        <ScrollArea h={tableHeight ? tableHeight : '68vh'}>
           <Table highlightOnHover verticalSpacing="md">
             <thead
               style={{
