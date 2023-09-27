@@ -28,18 +28,16 @@ import { NotificationUtil } from '../../utils/notifications';
 import { createTag, fetchDoctorsTags } from '../../services/tag';
 import ServerErrorBox from '../Global/ServerErrorBox';
 
-const CcModal = ({ opened, close, ccs, setCcs }) => {
+const AdviceModal = ({ opened, close, advices, setAdvices }) => {
   const queryClient = useQueryClient();
   const ref = useRef();
   //console.log(data);
 
-  const [type, setType] = useState('cc');
+  const [type, setType] = useState('advice');
   const [searchKey, setSearchKey] = useState('');
   const [currentSelectedTag, setCurrentSelectedTag] = useState(null);
   const [selectedTags, setSelectedTags] = useState([]);
   const [showOptionSelectBox, setOptionSelectBox] = useState(false);
-  const [duration, setDuration] = useState('');
-  const [time, setTime] = useState('');
   const [other, setOther] = useState('');
 
   const form = useForm({
@@ -107,12 +105,10 @@ const CcModal = ({ opened, close, ccs, setCcs }) => {
     setOptionSelectBox(true);
   };
 
-  const addSelectedTag = (value, duration, time, other) => {
+  const addSelectedTag = (value, other) => {
     let newItem = {
       id: value.id,
-      value: `${value.value} ${duration ? duration : ''} ${time ? time : ''} ${
-        other ? other : ''
-      }`,
+      value: `${value.value}  ${other ? other : ''}`,
     };
 
     if (isArrayAndHasContent(selectedTags)) {
@@ -128,8 +124,6 @@ const CcModal = ({ opened, close, ccs, setCcs }) => {
     }
 
     setCurrentSelectedTag(null);
-    setDuration(null);
-    setTime(null);
     setOther(null);
     setOptionSelectBox(false);
   };
@@ -140,7 +134,7 @@ const CcModal = ({ opened, close, ccs, setCcs }) => {
   };
 
   const handleSave = (selectedTags) => {
-    setCcs(selectedTags);
+    setAdvices(selectedTags);
     close();
   };
 
@@ -158,7 +152,7 @@ const CcModal = ({ opened, close, ccs, setCcs }) => {
         setOptionSelectBox(false);
         close();
       }}
-      title="C/C"
+      title="Advice"
       size="xl"
       closeOnClickOutside={false}>
       <div style={{ minHeight: '60vh' }}>
@@ -257,36 +251,15 @@ const CcModal = ({ opened, close, ccs, setCcs }) => {
 
               {showOptionSelectBox && currentSelectedTag && (
                 <Flex direction="column" gap={5}>
-                  <Text fz="sm">Select Options</Text>
+                  <Text fz="sm">Add Other Description</Text>
                   <Flex gap={2} style={{ maxWidth: '400px' }}>
-                    <Select
-                      placeholder="Duration"
-                      data={Array.from({ length: 29 }, (_, index) =>
-                        (index + 1).toString(),
-                      )}
-                      value={duration}
-                      onChange={setDuration}
-                    />
-                    <Select
-                      placeholder="Time"
-                      data={['Day', 'Days', 'Week', 'Month', 'Year']}
-                      value={time}
-                      onChange={setTime}
-                    />
                     <TextInput
-                      placeholder="Other"
+                      placeholder="Enter Description"
                       value={other}
                       onChange={(e) => setOther(e.target.value)}
                     />
                     <Button
-                      onClick={() =>
-                        addSelectedTag(
-                          currentSelectedTag,
-                          duration,
-                          time,
-                          other,
-                        )
-                      }
+                      onClick={() => addSelectedTag(currentSelectedTag, other)}
                       rightIcon={<IconPlus size="1em" />}>
                       Add
                     </Button>
@@ -312,4 +285,4 @@ const CcModal = ({ opened, close, ccs, setCcs }) => {
   );
 };
 
-export default CcModal;
+export default AdviceModal;

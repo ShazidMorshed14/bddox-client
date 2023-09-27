@@ -54,38 +54,31 @@ const PrescriptionTemplate = ({
             </div>
 
             <div className="main_body_section">
-              <Grid style={{ height: '100% !important' }}>
-                <Grid.Col
-                  xl={3}
-                  lg={3}
-                  md={3}
-                  sm={3}
-                  xs={3}
-                  style={{ height: '100% !important' }}>
-                  <div className="main_body_left_section">
-                    <div className="main_body_left_section_inner">
-                      <Flex direction="column" gap={10}>
-                        <div className="cc_box each_box">
-                          <Text fz="sm">C/C:</Text>
-                        </div>
-
-                        <div className="oe_box each_box">
-                          <Text fz="sm">O/E:</Text>
-                        </div>
-
-                        <div className="advice_box each_box">
-                          <Text fz="sm">advice:</Text>
-                        </div>
-                      </Flex>
+              <div className="main_body_left_section">
+                <div className="main_body_left_section_inner">
+                  <Flex direction="column" gap={10}>
+                    <div className="cc_box each_box">
+                      <Text fz="sm">C/C:</Text>
                     </div>
-                  </div>
-                </Grid.Col>
-                <Grid.Col xl={9} lg={9} md={9} sm={9} xs={9}>
-                  <div className="main_body_right_section">
-                    <div className="main_body_right_section_inner">Rx</div>
-                  </div>
-                </Grid.Col>
-              </Grid>
+
+                    <div className="oe_box each_box">
+                      <Text fz="sm">O/E:</Text>
+                    </div>
+
+                    <div className="advice_box each_box">
+                      <Text fz="sm">advice:</Text>
+                    </div>
+                  </Flex>
+                </div>
+              </div>
+
+              <div className="main_body_right_section">
+                <div className="main_body_right_section_inner">
+                  <Text fw={600} fz="xl">
+                    Rx
+                  </Text>
+                </div>
+              </div>
             </div>
 
             <div className="bottom_section">

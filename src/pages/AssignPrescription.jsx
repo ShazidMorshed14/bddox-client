@@ -11,17 +11,26 @@ import { IconDownload } from '@tabler/icons-react';
 import COLORS from '../constants/colors';
 import { useState } from 'react';
 import CcModal from '../components/Modals/CcModal';
+import OeModal from '../components/Modals/OeModal';
+import AdviceModal from '../components/Modals/AdviceModal';
+
+import ReactToPrint from 'react-to-print';
+import { useRef } from 'react';
 
 const AssignPrescription = () => {
   const { appointmentId } = useParams();
 
   const [ccModal, setCcModal] = useState(false);
-  const [oesModal, setOesModal] = useState(false);
-  const [medicineModal, setModal] = useState(false);
+  const [oeModal, setOeModal] = useState(false);
+  const [adviceModal, setAdviceModal] = useState(false);
+  const [medicineModal, setMedicineModal] = useState(false);
 
   const [ccs, setCcs] = useState([]);
   const [oes, setOes] = useState([]);
+  const [advices, setAdvices] = useState([]);
   const [medicines, setMedicines] = useState([]);
+
+  const componentRef = useRef();
 
   const {
     data: prescriptionDetails,
@@ -48,8 +57,6 @@ const AssignPrescription = () => {
     keepPreviousData: true,
     retry: false,
   });
-
-  console.log(appointmentDetails);
 
   if (appointmentDetailsLoading || prescriptionDetailsIsLoading)
     return (
@@ -91,6 +98,22 @@ const AssignPrescription = () => {
         close={() => setCcModal(false)}
         ccs={ccs}
         setCcs={setCcs}
+      />
+
+      {/* o/e modal */}
+      <OeModal
+        opened={oeModal}
+        close={() => setOeModal(false)}
+        oes={oes}
+        setOes={setOes}
+      />
+
+      {/* advice modal */}
+      <AdviceModal
+        opened={adviceModal}
+        close={() => setAdviceModal(false)}
+        advices={advices}
+        setAdvices={setAdvices}
       />
 
       <Flex
@@ -141,20 +164,36 @@ const AssignPrescription = () => {
               appointmentDetails={appointmentDetails?.data?.data}
               ccs={ccs}
               oes={oes}
+              advices={advices}
               medicines={medicines}
+              componentRef={componentRef}
             />
           </Grid.Col>
 
           <Grid.Col xl={4} lg={4} md={4} sm={12}>
             <Flex direction="column" gap={10}>
-              <Button rightIcon={<IconDownload size={18} />}>Print</Button>
+              <ReactToPrint
+                trigger={() => (
+                  <Button rightIcon={<IconDownload size={18} />}>Print</Button>
+                )}
+                content={() => componentRef.current}
+              />
+
               <Button
                 color={COLORS.primaryBtn}
                 onClick={() => setCcModal(true)}>
                 C/C
               </Button>
-              <Button color={COLORS.primaryBtn}>O/E</Button>
-              <Button color={COLORS.primaryBtn}>Advice</Button>
+              <Button
+                color={COLORS.primaryBtn}
+                onClick={() => setOeModal(true)}>
+                O/E
+              </Button>
+              <Button
+                color={COLORS.primaryBtn}
+                onClick={() => setAdviceModal(true)}>
+                Advice
+              </Button>
               <Button color={COLORS.primaryBtn}>Medicines</Button>
             </Flex>
           </Grid.Col>

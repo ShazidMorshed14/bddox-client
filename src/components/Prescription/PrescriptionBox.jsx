@@ -2,6 +2,8 @@ import React from 'react';
 import '../../styles/prescription-styles.scss';
 import { Flex, Grid, ScrollArea, Text } from '@mantine/core';
 import { isArrayAndHasContent } from '../../utils/utils';
+import dayjs from 'dayjs';
+import { calculateAge } from '../../constants/const';
 
 const PrescriptionBox = ({
   topLeft,
@@ -12,13 +14,15 @@ const PrescriptionBox = ({
   appointmentDetails,
   ccs,
   oes,
+  advices,
   medicines,
+  componentRef,
 }) => {
   return (
     <ScrollArea style={{ height: '90vh' }}>
       <div className="card">
         <div className="card-body">
-          <div className="prescription_wrapper">
+          <div className="prescription_wrapper" ref={componentRef}>
             <div className="top_section_wrapper">
               <Flex justify="space-between" align="center">
                 <div className="top_left_box">
@@ -34,76 +38,98 @@ const PrescriptionBox = ({
               <Flex justify="space-between">
                 <div className="item-section">
                   <Text fz="xs" fw={600}>
-                    Name : Shazid Morshed
+                    Name : {patientDetails?.name || 'N/A'}
                   </Text>
                 </div>
 
                 <div className="item-section">
                   <Text fz="xs" fw={600}>
-                    Age : 26
+                    Age :{' '}
+                    {patientDetails?.dob
+                      ? calculateAge(patientDetails?.dob)
+                      : 'N/A'}
                   </Text>
                 </div>
 
-                <div className="item-section">
+                {/* <div className="item-section">
                   <Text fz="xs" fw={600}>
-                    Weight : 67
+                    Weight : {patientDetails?.weight || 'N/A'}
                   </Text>
-                </div>
+                </div> */}
 
                 <div className="item-section">
                   <Text fz="xs" fw={600}>
-                    Date : 04/08/2023
+                    Date : {dayjs().format('DD-MM-YYYY')}
                   </Text>
                 </div>
               </Flex>
             </div>
 
             <div className="main_body_section">
-              <Grid style={{ height: '100% !important' }}>
-                <Grid.Col
-                  xl={3}
-                  lg={3}
-                  md={3}
-                  sm={3}
-                  xs={3}
-                  style={{ height: '100% !important' }}>
-                  <div className="main_body_left_section">
-                    <div className="main_body_left_section_inner">
-                      <Flex direction="column" gap={10}>
-                        <div className="cc_box each_box">
-                          <Text fz="sm">C/C:</Text>
-                          {isArrayAndHasContent(ccs) ? (
-                            <Flex direction="column" gap={5} py="sm">
-                              {ccs.map((cc, index) => {
-                                return (
-                                  <Text fz="xs" key={index}>
-                                    {cc.value}
-                                  </Text>
-                                );
-                              })}
-                            </Flex>
-                          ) : (
-                            <></>
-                          )}
-                        </div>
-
-                        <div className="oe_box each_box">
-                          <Text fz="sm">O/E:</Text>
-                        </div>
-
-                        <div className="advice_box each_box">
-                          <Text fz="sm">advice:</Text>
-                        </div>
-                      </Flex>
+              <div className="main_body_left_section">
+                <div className="main_body_left_section_inner">
+                  <Flex direction="column" gap={10}>
+                    <div className="cc_box each_box">
+                      <Text fz="sm">C/C:</Text>
+                      {isArrayAndHasContent(ccs) ? (
+                        <Flex direction="column" gap={5} py="sm">
+                          {ccs.map((cc, index) => {
+                            return (
+                              <Text fz="xs" key={index}>
+                                {cc.value}
+                              </Text>
+                            );
+                          })}
+                        </Flex>
+                      ) : (
+                        <></>
+                      )}
                     </div>
-                  </div>
-                </Grid.Col>
-                <Grid.Col xl={9} lg={9} md={9} sm={9} xs={9}>
-                  <div className="main_body_right_section">
-                    <div className="main_body_right_section_inner">Rx</div>
-                  </div>
-                </Grid.Col>
-              </Grid>
+
+                    <div className="oe_box each_box">
+                      <Text fz="sm">O/E:</Text>
+                      {isArrayAndHasContent(oes) ? (
+                        <Flex direction="column" gap={5} py="sm">
+                          {oes.map((oe, index) => {
+                            return (
+                              <Text fz="xs" key={index}>
+                                {oe.value}
+                              </Text>
+                            );
+                          })}
+                        </Flex>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+
+                    <div className="advice_box each_box">
+                      <Text fz="sm">Advice:</Text>
+                      {isArrayAndHasContent(advices) ? (
+                        <Flex direction="column" gap={5} py="sm">
+                          {advices.map((advice, index) => {
+                            return (
+                              <Text fz="xs" key={index}>
+                                {advice.value}
+                              </Text>
+                            );
+                          })}
+                        </Flex>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  </Flex>
+                </div>
+              </div>
+
+              <div className="main_body_right_section">
+                <div className="main_body_right_section_inner">
+                  <Text fw={600} fz="xl">
+                    Rx
+                  </Text>
+                </div>
+              </div>
             </div>
 
             <div className="bottom_section">
@@ -117,7 +143,7 @@ const PrescriptionBox = ({
               </Flex>
             </div>
 
-            <div className="common_footer_section">
+            <div className="bottom_section_last">
               <Flex justify="space-between" align="center" gap={5}>
                 <Text fz="xs" fw={600} p="xs">
                   {patientDetails?.pid || 'N/A'}

@@ -28,12 +28,12 @@ import { NotificationUtil } from '../../utils/notifications';
 import { createTag, fetchDoctorsTags } from '../../services/tag';
 import ServerErrorBox from '../Global/ServerErrorBox';
 
-const CcModal = ({ opened, close, ccs, setCcs }) => {
+const OeModal = ({ opened, close, oes, setOes }) => {
   const queryClient = useQueryClient();
   const ref = useRef();
   //console.log(data);
 
-  const [type, setType] = useState('cc');
+  const [type, setType] = useState('oe');
   const [searchKey, setSearchKey] = useState('');
   const [currentSelectedTag, setCurrentSelectedTag] = useState(null);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -140,7 +140,7 @@ const CcModal = ({ opened, close, ccs, setCcs }) => {
   };
 
   const handleSave = (selectedTags) => {
-    setCcs(selectedTags);
+    setOes(selectedTags);
     close();
   };
 
@@ -158,7 +158,7 @@ const CcModal = ({ opened, close, ccs, setCcs }) => {
         setOptionSelectBox(false);
         close();
       }}
-      title="C/C"
+      title="O/E"
       size="xl"
       closeOnClickOutside={false}>
       <div style={{ minHeight: '60vh' }}>
@@ -312,4 +312,4 @@ const CcModal = ({ opened, close, ccs, setCcs }) => {
   );
 };
 
-export default CcModal;
+export default OeModal;
