@@ -16,6 +16,7 @@ import AdviceModal from '../components/Modals/AdviceModal';
 
 import ReactToPrint from 'react-to-print';
 import { useRef } from 'react';
+import MedicineSelectModal from '../components/Modals/MedicineSelectModal';
 
 const AssignPrescription = () => {
   const { appointmentId } = useParams();
@@ -116,6 +117,14 @@ const AssignPrescription = () => {
         setAdvices={setAdvices}
       />
 
+      {/* medicine modal */}
+      <MedicineSelectModal
+        opened={medicineModal}
+        close={() => setMedicineModal(false)}
+        medicines={medicines}
+        setMedicines={setMedicines}
+      />
+
       <Flex
         w="100%"
         justify="flex-start"
@@ -194,7 +203,11 @@ const AssignPrescription = () => {
                 onClick={() => setAdviceModal(true)}>
                 Advice
               </Button>
-              <Button color={COLORS.primaryBtn}>Medicines</Button>
+              <Button
+                color={COLORS.primaryBtn}
+                onClick={() => setMedicineModal(true)}>
+                Medicines
+              </Button>
             </Flex>
           </Grid.Col>
         </Grid>
