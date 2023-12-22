@@ -147,7 +147,6 @@ const AppointmentManagement = () => {
     );
 
   const { appointments, total } = data.data.data;
-  console.log('appointments', appointments);
 
   return (
     <div>
