@@ -140,6 +140,9 @@ const AddMedicineDrawer = ({ opened, close, refetchData }) => {
       closeOnClickOutside={false}
       onClose={() => {
         form.reset();
+        setAddFormatModal(false);
+        setAddGenericModal(false);
+        setAddCompanyModal(false);
         close();
       }}
       title={<Text fw={600}>Add Medicine</Text>}
