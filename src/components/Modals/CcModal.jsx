@@ -246,7 +246,7 @@ const CcModal = ({ opened, close, ccs, setCcs }) => {
                   />
                   <Button
                     disabled={!form.values.value}
-                    color="dark"
+                    className="primary_btn"
                     type="submit"
                     mt={25}
                     rightIcon={<IconPlus size="1em" />}>
@@ -279,6 +279,7 @@ const CcModal = ({ opened, close, ccs, setCcs }) => {
                       onChange={(e) => setOther(e.target.value)}
                     />
                     <Button
+                      className="primary_btn"
                       onClick={() =>
                         addSelectedTag(
                           currentSelectedTag,
@@ -299,6 +300,7 @@ const CcModal = ({ opened, close, ccs, setCcs }) => {
         <div style={{ position: 'absolute', bottom: 10, right: 20 }}>
           <Flex justify="flex-end" gap={10}>
             <Button
+              className="primary_btn"
               onClick={() =>
                 //addSelectedTag(currentSelectedTag, duration, time, other)
                 handleSave(selectedTags)

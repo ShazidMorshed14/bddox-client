@@ -10,12 +10,19 @@ import MedicineManagement from '../pages/MedicineManagement';
 import PrescriptionCreate from '../pages/PrescriptionCreate';
 import AppointmentManagement from '../pages/AppointmentManagement';
 import AssignPrescription from '../pages/AssignPrescription';
+import HomeScreen from '../pages/HomeScreen';
 
 const routes = [
   {
+    path: urls.HOME,
+    Element: HomeScreen,
+    isIndexUrl: true,
+    isProtected: false,
+  },
+  {
     path: urls.SIGNIN,
     Element: SignIn,
-    isIndexUrl: true,
+    isIndexUrl: false,
     isProtected: false,
   },
   {

@@ -183,28 +183,28 @@ const AssignPrescription = () => {
             <Flex direction="column" gap={10}>
               <ReactToPrint
                 trigger={() => (
-                  <Button rightIcon={<IconDownload size={18} />}>Print</Button>
+                  <Button
+                    className="primary_btn"
+                    rightIcon={<IconDownload size={18} />}>
+                    Print
+                  </Button>
                 )}
                 content={() => componentRef.current}
               />
 
-              <Button
-                color={COLORS.primaryBtn}
-                onClick={() => setCcModal(true)}>
+              <Button className="primary_btn" onClick={() => setCcModal(true)}>
                 C/C
               </Button>
-              <Button
-                color={COLORS.primaryBtn}
-                onClick={() => setOeModal(true)}>
+              <Button className="primary_btn" onClick={() => setOeModal(true)}>
                 O/E
               </Button>
               <Button
-                color={COLORS.primaryBtn}
+                className="primary_btn"
                 onClick={() => setAdviceModal(true)}>
                 Advice
               </Button>
               <Button
-                color={COLORS.primaryBtn}
+                className="primary_btn"
                 onClick={() => setMedicineModal(true)}>
                 Medicines
               </Button>
