@@ -20,6 +20,8 @@ import SmallLogo from '../../assets/logo/logo-small.png';
 import COLORS from '../../constants/colors';
 import { SignInApi } from '../../services/auth';
 import { SignInSchema } from '../../validators/SignIn';
+import { NotificationUtil } from '../../utils/notifications';
+import { authActions } from '../../store/reducers/authReducer';
 const SignInButton = (props) => {
   // This component is used for performance, otherwise the whole page will re-render on each keystroke
   // Because of useWatch, which is a stupid design from react-hooks-form
@@ -70,18 +72,18 @@ const SignIn = () => {
     try {
       const response = await SignInApi(values.email, values.password);
       if (response.status === 200) {
-        // NotificationUtil({
-        //   success: true,
-        //   title: 'Welcome',
-        //   message: 'Login Successful!',
-        // });
-        // dispatch(
-        //   authActions.signin({
-        //     user: response.data.user,
-        //     accessToken: response.data.token,
-        //     refreshToken: response.data.refreshToken,
-        //   }),
-        // );
+        NotificationUtil({
+          success: true,
+          title: 'Welcome',
+          message: 'Login Successful!',
+        });
+        dispatch(
+          authActions.signin({
+            user: response.data.user,
+            accessToken: response.data.token,
+            //refreshToken: response.data.refreshToken,
+          }),
+        );
         navigate('/dashboard');
       }
     } catch (err) {

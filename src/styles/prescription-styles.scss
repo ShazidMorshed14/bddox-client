@@ -1,0 +1,52 @@
+.prescription_wrapper {
+  border: 1px solid grey;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .top_section_wrapper {
+    border-bottom: 1px solid grey;
+    padding: 1em;
+    min-height: 15vh;
+  }
+
+  .patient_details_section {
+    padding: 1em;
+    border-bottom: 1px solid grey;
+  }
+
+  .main_body_section {
+    flex: 1; /* This makes it take up the remaining vertical space */
+    display: flex; /* Nested flex container */
+    border-bottom: 1px solid grey;
+
+    .main_body_left_section,
+    .main_body_right-section {
+      min-height: 100%;
+      flex: 1; /* Distribute space evenly between child elements */
+      border-right: 1px solid grey;
+    }
+
+    .main_body_left_section {
+      max-width: 200px;
+    }
+
+    .main_body_left_section_inner,
+    .main_body_right_section_inner {
+      padding: 1em;
+      height: 100%;
+
+      .each_box {
+        min-height: 15vh;
+      }
+    }
+  }
+
+  .bottom_section {
+    padding: 1em;
+    max-height: 25vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
