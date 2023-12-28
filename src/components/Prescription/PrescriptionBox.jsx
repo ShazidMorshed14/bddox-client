@@ -18,6 +18,7 @@ const PrescriptionBox = ({
   medicines,
   componentRef,
 }) => {
+  console.log(medicines);
   return (
     <ScrollArea style={{ height: '90vh' }}>
       <div className="card">
@@ -128,6 +129,33 @@ const PrescriptionBox = ({
                   <Text fw={600} fz="xl">
                     Rx
                   </Text>
+
+                  {isArrayAndHasContent(medicines) && (
+                    <Flex direction="column" gap={10}>
+                      {medicines.map((med, index) => {
+                        return (
+                          <div key={index}>
+                            <Flex gap={10}>
+                              <Text fz="sm" fw={600}>
+                                {index + 1}.
+                              </Text>
+                              <Text fz="sm" fw={600}>
+                                {med?.medicine?.formatId?.name}{' '}
+                                {med?.medicine?.name}
+                              </Text>
+                            </Flex>
+                            <Flex gap={20}>
+                              <div></div>
+                              <Text fz="sm">
+                                {med?.dose} {med?.instruction} .....{' '}
+                                {med?.duration} {med?.time}
+                              </Text>
+                            </Flex>
+                          </div>
+                        );
+                      })}
+                    </Flex>
+                  )}
                 </div>
               </div>
             </div>
